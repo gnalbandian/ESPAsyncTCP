@@ -1230,7 +1230,7 @@ err_t AsyncServer::_accept(tcp_pcb* pcb, err_t err){
           }
           return ERR_OK;
         }
-        ASYNC_TCP_DEBUG("### put to wait: %d\n", _clients_waiting);
+//        ASYNC_TCP_DEBUG("### put to wait: %d\n", _clients_waiting);
         new_item->pcb = pcb;
         new_item->pb = NULL;
         new_item->next = NULL;
@@ -1315,7 +1315,7 @@ err_t AsyncServer::_poll(tcp_pcb* pcb){
       p->next = b->next;
       p = b;
     }
-    ASYNC_TCP_DEBUG("### remove from wait: %d\n", _clients_waiting);
+//    ASYNC_TCP_DEBUG("### remove from wait: %d\n", _clients_waiting);
     AsyncClient *c = new (std::nothrow) AsyncClient(pcb, _ssl_ctx);
     if(c){
       c->onConnect([this](void * arg, AsyncClient *c){
@@ -1341,7 +1341,7 @@ err_t AsyncServer::_recv(struct tcp_pcb *pcb, struct pbuf *pb, err_t err){
   struct pending_pcb * p;
 
   if(!pb){
-    ASYNC_TCP_DEBUG("### close from wait: %d\n", _clients_waiting);
+//    ASYNC_TCP_DEBUG("### close from wait: %d\n", _clients_waiting);
     p = _pending;
     if(p->pcb == pcb){
       _pending = _pending->next;
@@ -1362,7 +1362,7 @@ err_t AsyncServer::_recv(struct tcp_pcb *pcb, struct pbuf *pb, err_t err){
       return ERR_ABRT;
     }
   } else {
-    ASYNC_TCP_DEBUG("### wait _recv: %u %d\n", pb->tot_len, _clients_waiting);
+//    ASYNC_TCP_DEBUG("### wait _recv: %u %d\n", pb->tot_len, _clients_waiting);
     p = _pending;
     while(p && p->pcb != pcb)
       p = p->next;
